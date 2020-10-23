@@ -1,30 +1,22 @@
 const bcrypt = require("bcrypt");
 
 module.exports = function(sequelize, DataTypes) {
-    var User = sequelize.define("User", {
-        // Giving the User model a name of type STRING
+    var User = sequelize.define('User', {
+        // add properites here
         email: {
             type: DataTypes.STRING,
-            // allowNull: false,
             unique: true
         },
-        password: {
-            type: DataTypes.STRING,
-            // allowNull: false
-        }
+        password: DataTypes.STRING,
     });
 
     User.associate = function(models) {
-
-        // User.hasMany(models.Review, {
-        //         onDelete: 'cascade'
-        //     })
-        // Associating User with Posts
-        // When an User is deleted, also delete any associated Posts
-        // User.hasMany(models.Post, {
-        //     onDelete: "cascade"
-        // });
+        // add associations here
+        User.hasMany(models.Turtle, {
+            onDelete: "cascade"
+        });
     };
+
     User.beforeCreate(function(user) {
         user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
     })
